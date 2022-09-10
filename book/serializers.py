@@ -66,3 +66,6 @@ class BorrowBookResponseSerializer(serializers.Serializer):
     trx_id = serializers.IntegerField()
     details = serializers.ListField(child=TransactionDetailListSerializer())
 
+
+class RenewSerializer(serializers.Serializer):
+    transaction_detail_id = serializers.IntegerField()

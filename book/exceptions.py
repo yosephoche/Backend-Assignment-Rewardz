@@ -9,8 +9,22 @@ class BookOutOfStock(APIException):
     }
 
 
+class BookAlreadyBorrowed(APIException):
+    status_code = status.HTTP_400_BAD_REQUEST
+    default_detail = {
+        "message": "Book Already Borrowed, Return it first or you can renew once"
+    }
+
+
 class MaxBorrowedReach(APIException):
     status_code = status.HTTP_400_BAD_REQUEST
     default_detail = {
         "message": "This User have reach maximum borrow per user"
+    }
+
+
+class AlreadyRenewed(APIException):
+    status_code = status.HTTP_400_BAD_REQUEST
+    default_detail = {
+        "message": "This transaction already renewed"
     }
