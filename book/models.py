@@ -35,7 +35,16 @@ class Transaction(UserAwareModel):
         (TRX_TYPE_RETURNED, 'returned'),
     )
 
+    STATUS_ONGOING = "ongoing"
+    STATUS_COMPLETE = "complete"
+
+    TRX_STATUS = (
+        (STATUS_ONGOING, "ongoing"),
+        (STATUS_COMPLETE, "complete"),
+    )
+
     trx_type = models.CharField(max_length=50, choices=TRX_TYPE)
+    status = models.CharField(max_length=50, choices=TRX_STATUS, blank=True, null=True)
 
 
 class TransactionDetail(BookAwareModel, models.Model):
