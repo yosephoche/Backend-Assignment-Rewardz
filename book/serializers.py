@@ -4,24 +4,22 @@ from book.models import Book, TransactionDetail
 
 
 class BookBaseSerializer(serializers.ModelSerializer):
+    returned_at = serializers.SerializerMethodField()
+    is_available = serializers.SerializerMethodField()
+
+    def get_is_available(self, obj: Book):
+        return obj.is_available
+
+    def get_returned_at(self, obj: Book):
+        return obj.returned_at
+
     class Meta:
         model = Book
         fields = "__all__"
 
 
 class ListCreateBookSerializer(BookBaseSerializer):
-    returned_at = serializers.SerializerMethodField()
-    is_available = serializers.SerializerMethodField()
-
-    def get_is_available(self, obj: Book):
-        return obj.stock > 0
-
-    def get_returned_at(self, obj: Book):
-        if obj.stock > 0:
-            return None
-
-        transaction_detail = TransactionDetail.objects.filter(book=obj).order_by("-created_at").first()
-        return transaction_detail.return_deadline.strftime("%b %d %Y %H:%M:%S")
+    pass
 
 
 class BorrowBookSerializer(serializers.Serializer):

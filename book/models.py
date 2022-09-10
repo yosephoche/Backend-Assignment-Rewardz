@@ -18,6 +18,18 @@ class Book(Timestampable, models.Model):
     def __str__(self):
         return self.title
 
+    @property
+    def is_available(self):
+        return self.stock > 0
+
+    @property
+    def returned_at(self):
+        if self.stock > 0:
+            return None
+
+        transaction_detail = TransactionDetail.objects.filter(book=self).order_by("-created_at").first()
+        return transaction_detail.return_deadline.strftime("%b %d %Y %H:%M:%S")
+
 
 class BookAwareModel(Timestampable, models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
