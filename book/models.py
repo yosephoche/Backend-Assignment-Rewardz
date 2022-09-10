@@ -1,6 +1,7 @@
 from django.db import models
 
-from library_system.behaviors import Timestampable
+from authentication.models import User
+from library_system.behaviors import Timestampable, UserAwareModel
 
 
 class Book(Timestampable, models.Model):
@@ -21,3 +22,22 @@ class BookAwareModel(Timestampable, models.Model):
     class Meta:
         abstract = True
 
+
+class Transaction(UserAwareModel):
+    TRX_TYPE_BORROWED = 'borrowed'
+    TRX_TYPE_RETURNED = 'returned'
+
+    TRX_TYPE = (
+        (TRX_TYPE_BORROWED, 'borrowed'),
+        (TRX_TYPE_RETURNED, 'returned'),
+    )
+
+    trx_type = models.CharField(max_length=50, choices=TRX_TYPE)
+    borrowed_at = models.DateTimeField()
+    returned_at = models.DateTimeField()
+
+
+class TransactionDetail(BookAwareModel):
+    fk_transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
+    is_renew = models.BooleanField(default=False)
+    return_deadline = models.DateTimeField()

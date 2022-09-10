@@ -28,6 +28,13 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    ROLE_STUDENT = 'student'
+    ROLE_LIBRARIAN = 'librarian'
+    USER_ROLE = (
+        (ROLE_STUDENT, 1),
+        (ROLE_LIBRARIAN, 2),
+    )
+
     email = models.EmailField(unique=True)
     username = models.CharField(unique=True, max_length=500)
 
@@ -41,6 +48,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    role = models.CharField(max_length=50, choices=USER_ROLE, default=ROLE_STUDENT)
     admin_panel_access = models.BooleanField(default=False)
 
     verify = models.BooleanField(default=True)
