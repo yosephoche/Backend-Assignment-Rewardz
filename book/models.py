@@ -31,6 +31,14 @@ class Book(Timestampable, models.Model):
         transaction_detail = TransactionDetail.objects.filter(book=self).order_by("-created_at").first()
         return transaction_detail.return_deadline.strftime("%b %d %Y %H:%M:%S")
 
+    @property
+    def total_available(self):
+        if not self.is_available:
+            return 0
+
+        total_borrowed_book = TransactionDetail.objects.count_borrowed_book(self.id)
+        return self.stock - total_borrowed_book
+
 
 class BookAwareModel(Timestampable, models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)

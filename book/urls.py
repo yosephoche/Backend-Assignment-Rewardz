@@ -7,7 +7,6 @@ urlpatterns = [
     path("student/borrow-list", views.StudentBorrowList.as_view()),
     path("student/borrow-renew", views.StudentRenewBorrowView.as_view()),
     path("borrow/", views.BorrowView.as_view(), name="BorrowBookView"),
-    # path("borrow-list", views.BorrowView.as_view(), name="BorrowBookView"),
-    # path("borrow/detail/<int:pk>", views.BorrowView.as_view(), name="BorrowBookView"),
-    # path("return-book", views.ReturnBookView.as_view(), name="ReturnBookView"),
+    path("borrow/detail/<int:pk>", views.BorrowDetailView.as_view(), name="BorrowBookView"),
+    path("return", views.ReturnBookView.as_view()),
 ]

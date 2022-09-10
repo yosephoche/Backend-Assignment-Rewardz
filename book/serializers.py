@@ -20,7 +20,10 @@ class BookBaseSerializer(serializers.ModelSerializer):
 
 
 class ListCreateBookSerializer(BookBaseSerializer):
-    pass
+    total_stock_available = serializers.SerializerMethodField()
+
+    def get_total_stock_available(self, obj: Book):
+        return obj.total_available
 
 
 class BorrowBookSerializer(serializers.Serializer):
@@ -47,7 +50,7 @@ class TransactionDetailListSerializer(TransactionDetailBaseSerializer):
     book = serializers.SerializerMethodField()
 
     class Meta(TransactionDetailBaseSerializer.Meta):
-        fields = ["id", "book", "is_renew", "return_deadline", "created_at", "updated_at"]
+        fields = ["id", "book", "is_returned", "is_renew", "return_deadline", "created_at", "updated_at"]
 
     def get_book(self, obj: TransactionDetail):
         books = Book.objects.filter(id=obj.book_id)
@@ -69,3 +72,12 @@ class BorrowBookResponseSerializer(serializers.Serializer):
 
 class RenewSerializer(serializers.Serializer):
     transaction_detail_id = serializers.IntegerField()
+
+
+class ReturnBookSerializer(serializers.Serializer):
+    transaction_detail_id = serializers.IntegerField()
+
+
+class ReturnSerializer(serializers.Serializer):
+    student_id = serializers.IntegerField()
+    books = serializers.ListField(child=ReturnBookSerializer())

@@ -28,3 +28,10 @@ class AlreadyRenewed(APIException):
     default_detail = {
         "message": "This transaction already renewed"
     }
+
+
+class RenewedDisallowed(APIException):
+    status_code = status.HTTP_400_BAD_REQUEST
+    default_detail = {
+        "message": "Can't renew outside borrow period"
+    }
