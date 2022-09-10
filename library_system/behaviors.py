@@ -1,5 +1,4 @@
 from django.db import models
-from authentication.models import User
 
 
 class Timestampable(models.Model):
@@ -9,9 +8,3 @@ class Timestampable(models.Model):
     class Meta:
         abstract = True
 
-
-class UserAwareModel(Timestampable, models.Model):
-    fk_user = models.ForeignKey(User, on_delete=models.CASCADE)
-
-    class Meta:
-        abstract = True

@@ -3,6 +3,8 @@ from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin, Group
 )
+from authentication.managers import UserBookManager
+from library_system.behaviors import Timestampable
 
 
 class UserManager(BaseUserManager):
@@ -57,9 +59,17 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     # company_list = ArrayField(models.IntegerField(null=True, default=None), size=10)
     objects = UserManager()
+    user_books = UserBookManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
     def get_fullname(self):
         return '%s %s' % (self.first_name, self.last_name)
+
+
+class UserAwareModel(Timestampable, models.Model):
+    fk_user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    class Meta:
+        abstract = True
