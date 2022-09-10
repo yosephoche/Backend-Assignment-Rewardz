@@ -5,9 +5,9 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.generics import ListAPIView, ListCreateAPIView, GenericAPIView
 from rest_framework.response import Response
 
-from book.filters import BookListFilter
+from book.filters import BookListFilter, TransactionListFilter
 from book.serializers import ListCreateBookSerializer, BookBaseSerializer, BorrowBookSerializer, \
-    BorrowBookResponseSerializer
+    BorrowBookResponseSerializer, TransactionDetailListSerializer, TransactionListSerializer
 
 from book.models import Book, Transaction, TransactionDetail
 
@@ -53,5 +53,11 @@ class BorrowView(GenericAPIView):
 
         return Response(serializer.data)
 
-    def get(self, request):
-        pass
+
+class StudentBorrowList(ListAPIView):
+    permission_classes = []
+    queryset = Transaction.objects.all()
+    serializer_class = TransactionListSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = TransactionListFilter
+

@@ -39,12 +39,12 @@ class BookAwareModel(Timestampable, models.Model):
 
 
 class Transaction(UserAwareModel):
-    TRX_TYPE_BORROWED = 'borrowed'
-    TRX_TYPE_RETURNED = 'returned'
+    TRX_TYPE_BORROW = 'borrow'
+    TRX_TYPE_RETURN = 'return'
 
     TRX_TYPE = (
-        (TRX_TYPE_BORROWED, 'borrowed'),
-        (TRX_TYPE_RETURNED, 'returned'),
+        (TRX_TYPE_BORROW, 'borrow'),
+        (TRX_TYPE_RETURN, 'return'),
     )
 
     STATUS_ONGOING = "ongoing"
