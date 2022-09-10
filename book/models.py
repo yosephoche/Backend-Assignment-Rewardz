@@ -11,7 +11,7 @@ class Book(Timestampable, models.Model):
     publisher = models.CharField("Publisher", max_length=100)
     year = models.CharField("Year", max_length=50)
     description = models.TextField()
-    qty = models.IntegerField(default=1)
+    stock = models.IntegerField(default=1)
 
     objects = BookManager
 

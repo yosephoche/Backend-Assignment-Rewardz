@@ -21,7 +21,6 @@ class ListCreateBookSerializer(BookBaseSerializer):
             return None
 
         transaction_detail = TransactionDetail.objects.filter(book=obj).order_by("-created_at").first()
-        print(transaction_detail)
-        return transaction_detail.return_deadline
+        return transaction_detail.return_deadline.strftime("%b %d %Y %H:%M:%S")
 
 
