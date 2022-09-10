@@ -1,7 +1,7 @@
 from django.db import models
 
 from authentication.models import UserAwareModel
-from book.managers import BookManager
+from book.managers import BookManager, TransactionDetailManager
 from library_system.behaviors import Timestampable
 
 
@@ -20,11 +20,12 @@ class Book(Timestampable, models.Model):
 
     @property
     def is_available(self):
-        return self.stock > 0
+        total_borrowed_book = TransactionDetail.objects.count_borrowed_book(self.id)
+        return self.stock > total_borrowed_book
 
     @property
     def returned_at(self):
-        if self.stock > 0:
+        if self.is_available:
             return None
 
         transaction_detail = TransactionDetail.objects.filter(book=self).order_by("-created_at").first()
@@ -64,4 +65,6 @@ class TransactionDetail(BookAwareModel, models.Model):
     is_renew = models.BooleanField(default=False)
     return_deadline = models.DateTimeField(null=True)
     is_returned = models.BooleanField(default=False)
+
+    objects = TransactionDetailManager()
 
